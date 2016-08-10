@@ -12,7 +12,7 @@ import {
 
 import * as axios from 'axios';
 import Detail from './Detail'
-import { JSCoachData, JSCoachDataItem } from './index.d'; 
+import { JSCoachDataItem } from '../ts/jscoach.d' 
 
 interface P {
   navigator: NavigatorIOS

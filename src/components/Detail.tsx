@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { View, Text, ActivityIndicator, StyleSheet, ViewStyle, WebView } from 'react-native';
 
 import * as axios from 'axios';
-import { JSCoachDataItem } from './index.d'; 
+import { JSCoachDataItem } from '../ts/jscoach.d' 
 
 interface S {
   loaded: boolean,

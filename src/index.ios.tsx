@@ -11,7 +11,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import List from './components/List';
-import { JSCoachDataItem } from './index.d';
+import { JSCoachDataItem } from './ts/jscoach.d';
 
 interface AppProps extends React.Props<View> {
 }
