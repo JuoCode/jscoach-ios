@@ -16,16 +16,12 @@ export default class App extends Component {
         this.setState({ open: true });
     }
     render() {
-        return (React.createElement(SideMenu, {isOpen: this.state.open, menu: React.createElement(View, null, 
-            React.createElement(Text, null, "Menu")
-        )}, 
-            React.createElement(NavigatorIOS, {initialRoute: {
-                component: List,
-                title: 'JS.Coach',
-                leftButtonTitle: 'Category',
-                onLeftButtonPress: this.showMenu.bind(this)
-            }, style: { flex: 1 }})
-        ));
+        return (React.createElement(SideMenu, {isOpen: this.state.open, menu: React.createElement(View, null, React.createElement(Text, null, "Menu"))}, React.createElement(NavigatorIOS, {initialRoute: {
+            component: List,
+            title: 'JS.Coach',
+            leftButtonTitle: 'Category',
+            onLeftButtonPress: this.showMenu.bind(this)
+        }, style: { flex: 1 }})));
     }
 }
 var styles = StyleSheet.create({

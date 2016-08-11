@@ -5,26 +5,47 @@ import {
   Text,
   TextInput,
   StyleSheet,
+  TouchableOpacity,
+  Animated,
   ViewStyle
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from 'react-native-button';
+import Colors from '../constants/colors'
+interface S {
+  usernameFocus: boolean,
+  passwordFocus: boolean,
+  uwAV: Animated.Value,
+  pwAV: Animated.Value
+}
 
-export default class Login extends Component<any, any> {
+export default class Login extends Component<any, S> {
   constructor() {
     super();
     this.state = {
       usernameFocus: false,
-      passwordFocus: false
+      uwAV: new Animated.Value(0),
+      passwordFocus: false,
+      pwAV: new Animated.Value(0)
+
     }
   }
   render() {
+    const usernameWrapperStyle = this.state.uwAV.interpolate({
+      inputRange: [0, 300],
+      outputRange: ['#eee', Colors.PURPLE]
+    })
+    const passwordWrapperStyle = this.state.pwAV.interpolate({
+      inputRange: [0, 300],
+      outputRange: ['#eee', Colors.PURPLE]
+    })
     return (
       <View style={styles.container}>
         <View style={styles.banner} />
 
         <View style={styles.formWrapper}>
-          <View style={[styles.inputWrapper, this.state.usernameFocus && styles.inputWrapperFocus]}>
-            <Icon name="user" size={30} />
+          <Animated.View style={[styles.inputWrapper, { borderBottomColor: usernameWrapperStyle }]}>
+            <Icon name="user" size={18} color={Colors.PURPLE} />
             <TextInput
               style={[styles.input, { fontWeight: 'bold' }]}
               keyboardType="email-address"
@@ -32,22 +53,24 @@ export default class Login extends Component<any, any> {
               placeholder="Username"
               autoCorrect={false}
               returnKeyType='done'
-              onFocus={() => this.setState({ usernameFocus: true })}
-              onBlur={() => this.setState({ usernameFocus: false })}
+              onFocus={() => Animated.spring(this.state.uwAV, { toValue: 300 }).start()}
+              onBlur={() => Animated.spring(this.state.uwAV, { toValue: 0 }).start()}
             />
-          </View>
-          <View style={[styles.inputWrapper, this.state.passwordFocus && styles.inputWrapperFocus]}>
-            <Icon name="key" size={30} />
+          </Animated.View>
+          <Animated.View style={[styles.inputWrapper, { borderBottomColor: passwordWrapperStyle }]}>
+            <Icon name="key" size={18} color={Colors.PURPLE} />
             <TextInput
               style={styles.input}
               password={true}
               placeholder="Password"
               autoCorrect={false}
               returnKeyType='done'
-              onFocus={() => this.setState({ passwordFocus: true })}
-              onBlur={() => this.setState({ passwordFocus: false })}
+              onFocus={() => Animated.spring(this.state.pwAV, { toValue: 300 }).start()}
+              onBlur={() => Animated.spring(this.state.pwAV, { toValue: 0 }).start()}
             />
-          </View>
+          </Animated.View>
+          
+          <Button style={styles.loginButton}>LOGIN</Button>
         </View>
       </View>
     );
@@ -60,7 +83,7 @@ const styles = StyleSheet.create({
   } as ViewStyle,
   banner: {
     height: 180,
-    backgroundColor: 'rgb(120,45,230)'
+    backgroundColor: Colors.PURPLE
   } as ViewStyle,
   formWrapper: {
     flex: 1,
@@ -69,24 +92,29 @@ const styles = StyleSheet.create({
   } as ViewStyle,
   input: {
     flex: 1,
-    marginLeft: 18,
+    marginLeft: 12,
     alignSelf: 'auto',
     width: 200,
-    height: 30
+    height: 30,
+    color: Colors.PURPLE
   } as ViewStyle,
   username: {
     fontWeight: 'bold'
   } as ViewStyle,
   inputWrapper: {
     width: 280,
-    paddingBottom: 10,
+    paddingBottom: 6,
     marginBottom: 20,
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     borderBottomWidth: 2,
     borderBottomColor: '#eee'
   } as ViewStyle,
   inputWrapperFocus: {
-    borderBottomColor: 'rgb(120,45,230)'
+    borderBottomColor: Colors.PURPLE
+  } as ViewStyle,
+  loginButton: {
+    marginTop: 40,
+    color: Colors.PURPLE
   } as ViewStyle
 })

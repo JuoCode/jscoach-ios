@@ -39,13 +39,7 @@ class Row extends Component {
     }
     render() {
         const item = this.props.item;
-        return (React.createElement(View, {style: styles.rowWrapper}, 
-            React.createElement(TouchableHighlight, {underlayColor: '#EEE', style: styles.paddingWrapper, onPress: this.showDetail.bind(this, item)}, 
-                React.createElement(View, null, 
-                    React.createElement(Text, {style: styles.primaryText}, item.name), 
-                    React.createElement(Text, {ellipsizeMode: 'tail', numberOfLines: 1, style: styles.secondaryText}, item.description))
-            )
-        ));
+        return (React.createElement(View, {style: styles.rowWrapper}, React.createElement(TouchableHighlight, {underlayColor: '#EEE', style: styles.paddingWrapper, onPress: this.showDetail.bind(this, item)}, React.createElement(View, null, React.createElement(Text, {style: styles.primaryText}, item.name), React.createElement(Text, {ellipsizeMode: 'tail', numberOfLines: 1, style: styles.secondaryText}, item.description)))));
     }
 }
 const styles = StyleSheet.create({
