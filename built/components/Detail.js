@@ -17,21 +17,25 @@ export default class Detail extends Component {
         })
             .catch(err => console.error(err));
     }
-    // wrapHtml(body: string) {
-    //   return [
-    //     '<!DOCTYPE html>',
-    //     '<html lang="en">',
-    //     '<head>',
-    //     '  <meta charset="UTF-8">',
-    //     '  <title>Document</title>',
-    //     '</head>',
-    //     body,
-    //     '</html>',
-    //   ].join('')
-    // }
+    // https://raw.githubusercontent.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css
+    wrapHtml(body) {
+        return [
+            '<!DOCTYPE html>',
+            '<html lang="en">',
+            '<head>',
+            '  <meta charset="UTF-8">',
+            '  <link rel="stylesheet" href="https://raw.githubusercontent.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css">',
+            '  <title>Document</title>',
+            '</head>',
+            '<body class="markdown-body">',
+            body,
+            '</body>',
+            '</html>',
+        ].join('');
+    }
     render() {
-        return (React.createElement(View, {style: { flex: 1, paddingTop: 62 }}, this.state.loaded
-            ? React.createElement(WebView, {source: { html: this.state.detail.readme }})
+        return (React.createElement(View, {style: { flex: 1, paddingTop: 64 }}, this.state.loaded
+            ? React.createElement(WebView, {source: { html: this.wrapHtml(this.state.detail.readme) }})
             : React.createElement(ActivityIndicator, {animating: true, size: 'large'})));
     }
 }

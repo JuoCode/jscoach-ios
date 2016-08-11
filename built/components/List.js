@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { View, Text, ListView, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { View, Text, ListView, StyleSheet, TouchableHighlight, ActivityIndicator } from 'react-native';
 import * as axios from 'axios';
 import Detail from './Detail';
-class List extends Component {
+export default class List extends Component {
     constructor() {
         super();
         const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -19,28 +19,8 @@ class List extends Component {
             packages: this.state.packages.cloneWithRows(resp.data.packages)
         }));
     }
-    showDetail(row) {
-        this.props.navigator.push({
-            component: Detail,
-            passProps: { item: row },
-            title: row.name
-        });
-    }
     renderRow(row) {
-        return (React.createElement(View, {style: {
-            borderBottomWidth: 1,
-            borderBottomColor: '#EEE'
-        }}, React.createElement(TouchableHighlight, {underlayColor: '#EEE', style: {
-            paddingHorizontal: 16,
-            paddingVertical: 8
-        }, onPress: this.showDetail.bind(this, row)}, React.createElement(View, null, React.createElement(Text, {style: {
-            fontSize: 18,
-            fontWeight: 'bold',
-            color: 'black'
-        }}, row.name), React.createElement(Text, {ellipsizeMode: 'tail', numberOfLines: 1, style: {
-            color: '#999',
-            flexWrap: 'nowrap'
-        }}, row.description)))));
+        return (React.createElement(Row, {item: row, navigator: this.props.navigator}));
     }
     render() {
         return (React.createElement(View, {style: { flex: 1, paddingTop: 62 }}, this.state.loaded
@@ -48,4 +28,42 @@ class List extends Component {
             : React.createElement(ActivityIndicator, {animating: true, size: 'large'})));
     }
 }
-export default List;
+class Row extends Component {
+    showDetail() {
+        const item = this.props.item;
+        this.props.navigator.push({
+            component: Detail,
+            passProps: { item },
+            title: item.name
+        });
+    }
+    render() {
+        const item = this.props.item;
+        return (React.createElement(View, {style: styles.rowWrapper}, 
+            React.createElement(TouchableHighlight, {underlayColor: '#EEE', style: styles.paddingWrapper, onPress: this.showDetail.bind(this, item)}, 
+                React.createElement(View, null, 
+                    React.createElement(Text, {style: styles.primaryText}, item.name), 
+                    React.createElement(Text, {ellipsizeMode: 'tail', numberOfLines: 1, style: styles.secondaryText}, item.description))
+            )
+        ));
+    }
+}
+const styles = StyleSheet.create({
+    rowWrapper: {
+        borderBottomWidth: 1,
+        borderBottomColor: '#EEE'
+    },
+    paddingWrapper: {
+        paddingHorizontal: 16,
+        paddingVertical: 8
+    },
+    primaryText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: 'black'
+    },
+    secondaryText: {
+        color: '#999',
+        flexWrap: 'nowrap'
+    }
+});

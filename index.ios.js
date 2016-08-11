@@ -6,5 +6,6 @@
 
 import { AppRegistry } from 'react-native';
 import App from './built/index.ios'
+import Login from './built/components/Login'
 
-AppRegistry.registerComponent('HelloRN', () => App);
+AppRegistry.registerComponent('HelloRN', () => Login);

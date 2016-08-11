@@ -27,25 +27,29 @@ export default class Detail extends Component<any, any> {
       .catch(err => console.error(err))
   }
 
-  // wrapHtml(body: string) {
-  //   return [
-  //     '<!DOCTYPE html>',
-  //     '<html lang="en">',
-  //     '<head>',
-  //     '  <meta charset="UTF-8">',
-  //     '  <title>Document</title>',
-  //     '</head>',
-  //     body,
-  //     '</html>',
-  //   ].join('')
-  // }
+  // https://raw.githubusercontent.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css
+  wrapHtml(body: string) {
+    return [
+      '<!DOCTYPE html>',
+      '<html lang="en">',
+      '<head>',
+      '  <meta charset="UTF-8">',
+      '  <link rel="stylesheet" href="https://raw.githubusercontent.com/sindresorhus/github-markdown-css/gh-pages/github-markdown.css">',
+      '  <title>Document</title>',
+      '</head>',
+      '<body class="markdown-body">',
+      body,
+      '</body>',
+      '</html>',
+    ].join('')
+  }
   
   render() {
     return (
-      <View style={{ flex: 1, paddingTop: 62 }}>
+      <View style={{ flex: 1, paddingTop: 64 }}>
         {this.state.loaded
           ? <WebView
-              source={{ html: this.state.detail.readme }}
+              source={{ html: this.wrapHtml(this.state.detail.readme) }}
             />
           : <ActivityIndicator animating={true} size='large' />
         }

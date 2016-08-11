@@ -4,6 +4,8 @@ import {
   View,
   Text,
   ListView,
+  StyleSheet,
+  ViewStyle,
   ListViewDataSource,
   NavigatorIOS,
   TouchableHighlight,
@@ -12,7 +14,7 @@ import {
 
 import * as axios from 'axios';
 import Detail from './Detail'
-import { JSCoachDataItem } from '../ts/jscoach.d' 
+import { JSCoachData, JSCoachDataItem } from '../ts/jscoach.d' 
 
 interface P {
   navigator: NavigatorIOS
@@ -22,7 +24,7 @@ interface S {
   packages: ListViewDataSource
 }
 
-class List extends Component<P, S> {
+export default class List extends Component<P, S> {
   constructor() {
     super()
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
@@ -39,47 +41,10 @@ class List extends Component<P, S> {
         packages: this.state.packages.cloneWithRows((resp.data as JSCoachData).packages)
       }))
   }
-
-  showDetail(row: JSCoachDataItem) {
-    this.props.navigator.push({
-      component: Detail,
-      passProps: { item: row },
-      title: row.name
-    });
-  }
   
   renderRow(row: JSCoachDataItem) {
     return (
-      <View style={{
-        borderBottomWidth: 1,
-        borderBottomColor: '#EEE'
-      }}>
-        <TouchableHighlight
-          underlayColor='#EEE'
-          style={{
-            paddingHorizontal: 16,
-            paddingVertical: 8
-          }}
-          onPress={this.showDetail.bind(this, row) }>
-          <View>
-            <Text style={{
-              fontSize: 18,
-              fontWeight: 'bold',
-              color: 'black'
-            }}>{row.name}</Text>
-            <Text
-              ellipsizeMode='tail'
-              numberOfLines={1}
-              style={{
-                color: '#999',
-                flexWrap: 'nowrap'
-              }}
-            >
-              {row.description}
-            </Text>
-          </View>
-        </TouchableHighlight>
-      </View >
+      <Row item={row} navigator={this.props.navigator} />
     )
   }
   
@@ -99,4 +64,60 @@ class List extends Component<P, S> {
   }
 }
 
-export default List;
+interface RowP {
+  item: JSCoachDataItem,
+  navigator: NavigatorIOS
+}
+class Row extends Component<RowP, any> {
+  showDetail() {
+    const item = this.props.item
+    this.props.navigator.push({
+      component: Detail,
+      passProps: { item },
+      title: item.name
+    });
+  }
+
+  render() {
+    const item = this.props.item
+    return (
+      <View style={styles.rowWrapper}>
+        <TouchableHighlight
+          underlayColor='#EEE'
+          style={styles.paddingWrapper}
+          onPress={this.showDetail.bind(this, item) }>
+          <View>
+            <Text style={styles.primaryText}>{item.name}</Text>
+            <Text
+              ellipsizeMode='tail'
+              numberOfLines={1}
+              style={styles.secondaryText}
+            >
+              {item.description}
+            </Text>
+          </View>
+        </TouchableHighlight>
+      </View >
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  rowWrapper: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#EEE'
+  } as ViewStyle,
+  paddingWrapper: {
+    paddingHorizontal: 16,
+    paddingVertical: 8
+  } as ViewStyle,
+  primaryText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black'
+  } as ViewStyle,
+  secondaryText: {
+    color: '#999',
+    flexWrap: 'nowrap'
+  } as ViewStyle
+})
